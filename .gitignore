@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vercel
+.DS_Store
+
+# Local editor/tooling config
+.claude/
+
+# APK build output
+*.apk
+
+# Signing keys must never be committed
+*.jks
+*.keystore

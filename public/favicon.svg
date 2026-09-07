@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#12141a"/>
+  <g transform="translate(0 0) scale(1)">
+    <rect x="56" y="56" width="400" height="400" rx="96" fill="#6a92ff"/>
+    <text x="256" y="256" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+          font-size="260" font-weight="700" fill="#ffffff"
+          text-anchor="middle" dominant-baseline="central">$</text>
+    <circle cx="372" cy="372" r="62" fill="#34d399" stroke="#12141a" stroke-width="18"/>
+    <path d="M344 372 l20 22 l40 -46" fill="none" stroke="#12141a"
+          stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

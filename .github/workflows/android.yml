@@ -1,0 +1,59 @@
+name: Build Android APK
+
+# Gradle cannot start on a Windows setup without working AF_UNIX sockets, because
+# java.nio Selector.open() fails and it never gets as far as the build. Linux
+# runners have no such problem, which is why the APK is assembled here.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+# The job only reads the repo and uploads an artifact, so the token gets nothing
+# else. Worth being explicit on a public repo: `npm ci` runs dependency install
+# scripts, and a write-capable default token is what turns a bad package into a
+# push to your branches.
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build web bundle
+        run: npm run build
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Sync web assets into the Android project
+        run: npx cap sync android
+
+      - name: Assemble debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: payday-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
